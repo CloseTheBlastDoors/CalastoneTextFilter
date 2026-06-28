@@ -41,6 +41,14 @@ public class FilterMiddleVowelTests
     }
 
     [Fact]
+    public void Apply_WithPunctuation()
+    {
+        var pipeline = BuildPipeline();
+        string result = pipeline.Apply("clean; to - the# seven, nymph.");
+        Assert.Equal("seven, nymph.", result);
+    }
+
+    [Fact]
     public void Apply_EmptyInput_ReturnsEmpty()
     {
         var pipeline = BuildPipeline();

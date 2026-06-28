@@ -15,8 +15,14 @@ public class FilterPipeline(IEnumerable<IWordFilter> filters)
         }
 
         var words = input.Split(' ', StringSplitOptions.RemoveEmptyEntries);
-        var keptWords = words.Where(word => _filters.All(filter => filter.ShouldKeep(word)));
+        var keptWords = words.Where(word => _filters.All(filter => filter.ShouldKeep(StripNonLetterOrDigit(word))));
         return string.Join(" ", keptWords);
+    }
+
+    private static string StripNonLetterOrDigit(string word)
+    {
+        string strippedWord = new([.. word.Where(char.IsLetterOrDigit)]);
+        return strippedWord;
     }
 }
 
