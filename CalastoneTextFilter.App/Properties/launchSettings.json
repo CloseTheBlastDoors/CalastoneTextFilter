@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "CalastoneTextFilter.App": {
+      "commandName": "Project",
+      "commandLineArgs": "input.txt",
+      "workingDirectory": "$(ProjectDir)"
+    }
+  }
+}
