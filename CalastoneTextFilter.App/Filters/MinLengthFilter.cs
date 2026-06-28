@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace CalastoneTextFilter.App.Filters
 {
-    public class MinLengthFilter : IWordFilter
+    public class MinLengthFilter(int length) : IWordFilter
     {
         public bool ShouldKeep(ReadOnlySpan<char> word)
         {
-            return word.Length >= 3;
+            return word.Length >= length;
         }
     }
 }

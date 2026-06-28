@@ -4,7 +4,8 @@ namespace CalastoneTextFilter.Tests
 {
     public class MinLengthFilterTests
     {
-        private readonly MinLengthFilter _filter = new();
+        const int MIN_LENGTH = 3;
+        private readonly MinLengthFilter _filter = new(MIN_LENGTH);
 
         [Theory]
         [InlineData("")]
