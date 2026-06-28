@@ -2,9 +2,10 @@
 
 namespace CalastoneTextFilter.Tests
 {
-    public class ContainsTFilterTests
+    public class ContainsCharacterFilterTests
     {
-        private readonly ContainsTFilter _filter = new();
+        const char CHARACTER_TO_FILTER = 't';
+        private readonly ContainsCharacterFilter _filter = new(CHARACTER_TO_FILTER);
 
         [Theory]
         [InlineData("the")]
