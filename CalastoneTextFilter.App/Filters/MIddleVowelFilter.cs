@@ -11,17 +11,15 @@ namespace CalastoneTextFilter.App.Filters
         public bool ShouldKeep(ReadOnlySpan<char> word)
         {
             if (word.IsEmpty) return true;
+            int mid = word.Length / 2;
 
-            string wordAsString = word.ToString();
-            int mid = wordAsString.Length / 2;
-
-            if (wordAsString.Length % 2 == 1) // Odd length
+            if (word.Length % 2 == 1) // Odd length
             {
-                return !IsVowel(wordAsString[mid]);
+                return !IsVowel(word[mid]);
             }
             else // Even length
             {
-                return !IsVowel(wordAsString[mid - 1]) && !IsVowel(wordAsString[mid]);
+                return !IsVowel(word[mid - 1]) && !IsVowel(word[mid]);
             }
         }
 
