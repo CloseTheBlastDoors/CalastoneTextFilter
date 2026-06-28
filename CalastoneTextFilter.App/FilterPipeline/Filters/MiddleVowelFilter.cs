@@ -17,7 +17,7 @@ public class MiddleVowelFilter : IWordFilter
         }
     }
 
-    private bool IsVowel(char c)
+    private static bool IsVowel(char c)
     {
         return "aeiou".Contains(c, StringComparison.OrdinalIgnoreCase);
     }
