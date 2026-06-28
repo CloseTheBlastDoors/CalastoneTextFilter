@@ -1,9 +1,21 @@
-﻿using CalastoneTextFilter.App.FilterPipeline;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+
+using CalastoneTextFilter.App.FilterPipeline;
 using CalastoneTextFilter.App.FilterPipeline.Filters;
+
+var serviceCollection = new ServiceCollection()
+    .AddLogging(builder =>
+    {
+        builder.AddConsole();
+    });
+
+var serviceProvider = serviceCollection.BuildServiceProvider();
+var logger = serviceProvider.GetRequiredService<ILogger<Program>>();
 
 if (args.Length == 0)
 {
-    Console.Error.WriteLine("Usage: TextFilter.App <path-to-file.txt>");
+    logger.LogError("Usage: TextFilter.App {Path}", "<path-to-file.txt>");
     return 1;
 }
 
@@ -11,7 +23,7 @@ string path = args[0];
 
 if (!File.Exists(path))
 {
-    Console.Error.WriteLine($"File not found: {path}");
+    logger.LogError("File not found: {Path}", path);
     return 1;
 }
 
@@ -29,5 +41,5 @@ var filterPipeline = new FilterPipeline(
 
 string result = filterPipeline.Apply(text);
 
-Console.WriteLine(result);
+logger.LogInformation("{Result}", result);
 return 0;
