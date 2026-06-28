@@ -41,4 +41,6 @@ var processor = serviceProvider.GetRequiredService<IFilterPipeline>();
 
 string result = processor.Apply(text);
 logger.LogTrace("{Result}", result);
+
+Console.WriteLine(result);
 return 0;
