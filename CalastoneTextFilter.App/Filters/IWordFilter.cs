@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace CalastoneTextFilter.App.Filters;
 
-namespace CalastoneTextFilter.App.Filters
+public interface IWordFilter
 {
-    internal interface IWordFilter
-    {
-        public bool ShouldKeep(ReadOnlySpan<char> word);
-    }
+    public bool ShouldKeep(ReadOnlySpan<char> word);
 }
+
