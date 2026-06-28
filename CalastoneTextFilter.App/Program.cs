@@ -2,13 +2,21 @@
 using Microsoft.Extensions.Logging;
 
 using CalastoneTextFilter.App.FilterPipeline;
-using CalastoneTextFilter.App.FilterPipeline.Filters;
+using CalastoneTextFilter.App.FilterPipeline.Filters;       
 
 var serviceCollection = new ServiceCollection()
     .AddLogging(builder =>
     {
         builder.AddConsole();
     });
+
+const int MIN_LENGTH = 3;
+const char CHARACTER_TO_FILTER = 't';
+
+serviceCollection.AddFilterPipeline();
+serviceCollection.AddMinLengthFilter(MIN_LENGTH);
+serviceCollection.AddCharacterFilter(CHARACTER_TO_FILTER);
+serviceCollection.AddMiddleVowelFilter();
 
 var serviceProvider = serviceCollection.BuildServiceProvider();
 var logger = serviceProvider.GetRequiredService<ILogger<Program>>();
@@ -29,17 +37,8 @@ if (!File.Exists(path))
 
 string text = File.ReadAllText(path);
 
-const int MIN_LENGTH = 3;
-const char CHARACTER_TO_FILTER = 't';
+var processor = serviceProvider.GetRequiredService<IFilterPipeline>();
 
-var filterPipeline = new FilterPipeline(
-[
-    new MiddleVowelFilter(),
-    new MinLengthFilter(MIN_LENGTH),
-    new ContainsCharacterFilter(CHARACTER_TO_FILTER)
-]);
-
-string result = filterPipeline.Apply(text);
-
+string result = processor.Apply(text);
 logger.LogInformation("{Result}", result);
 return 0;

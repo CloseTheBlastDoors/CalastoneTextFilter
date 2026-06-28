@@ -1,9 +1,10 @@
 ﻿using CalastoneTextFilter.App.FilterPipeline;
 using CalastoneTextFilter.App.FilterPipeline.Filters;
+using Microsoft.Extensions.Logging.Abstractions;
 
 namespace CalastoneTextFilter.Tests;
 
-public class FilterMiddleVowelTests
+public class FilterPipelineTests
 {
     const int MIN_LENGTH = 3;
     const char CHARACTER_TO_FILTER = 't';
@@ -15,7 +16,7 @@ public class FilterMiddleVowelTests
         new MiddleVowelFilter(),
         new MinLengthFilter(MIN_LENGTH),
         new ContainsCharacterFilter(CHARACTER_TO_FILTER),
-    ]);
+    ], NullLogger<FilterPipeline>.Instance);
     }
 
     [Fact]
