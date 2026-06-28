@@ -21,7 +21,7 @@ namespace CalastoneTextFilter.Tests
         [InlineData("word")]
         [InlineData("hello")]
         [InlineData("beginning")]
-        public void ShouldKeep_ReturnsTrue_WhenLengthMoreThen3(string word)
+        public void ShouldKeep_ReturnsTrue_WhenLengthMoreThan3(string word)
         {
             Assert.True(_filter.ShouldKeep(word));
         }
