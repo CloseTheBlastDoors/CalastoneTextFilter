@@ -1,5 +1,5 @@
-﻿using CalastoneTextFilter.App;
-using CalastoneTextFilter.App.Filters;
+﻿using CalastoneTextFilter.App.FilterPipeline;
+using CalastoneTextFilter.App.FilterPipeline.Filters;
 
 namespace CalastoneTextFilter.Tests;
 

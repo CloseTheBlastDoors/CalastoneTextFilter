@@ -1,4 +1,4 @@
-﻿namespace CalastoneTextFilter.App.Filters;
+﻿namespace CalastoneTextFilter.App.FilterPipeline.Filters;
 
 public class MiddleVowelFilter : IWordFilter
 {
