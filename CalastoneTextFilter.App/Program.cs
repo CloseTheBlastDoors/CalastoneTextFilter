@@ -22,7 +22,7 @@ var logger = serviceProvider.GetRequiredService<ILogger<Program>>();
 
 if (args.Length == 0)
 {
-    logger.LogError("Usage: TextFilter.App {Path}", "<path-to-file.txt>");
+    logger.LogError("Usage: TextFilter.App <path-to-file.txt>");
     return 1;
 }
 
