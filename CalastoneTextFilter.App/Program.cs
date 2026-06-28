@@ -40,5 +40,5 @@ string text = File.ReadAllText(path);
 var processor = serviceProvider.GetRequiredService<IFilterPipeline>();
 
 string result = processor.Apply(text);
-logger.LogInformation("{Result}", result);
+logger.LogTrace("{Result}", result);
 return 0;
