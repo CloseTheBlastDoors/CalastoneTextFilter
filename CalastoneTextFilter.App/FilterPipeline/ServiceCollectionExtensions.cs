@@ -1,28 +1,35 @@
-using CalastoneTextFilter.App.FilterPipeline.Filters;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace CalastoneTextFilter.App.FilterPipeline;
 
 public static class ServiceCollectionExtensions
 {
-    public static IServiceCollection AddFilterPipeline(this IServiceCollection services)
+    public static IServiceCollection AddFilterPipeline(
+        this IServiceCollection services,
+        Action<FilterPipelineBuilder> configure)
     {
-        services.AddSingleton<IFilterPipeline, FilterPipeline>();
+        var filters = BuildFilters(configure);
+        services.AddSingleton<IFilterPipeline>(provider =>
+            new FilterPipeline(filters, provider.GetRequiredService<ILogger<FilterPipeline>>()));
         return services;
     }
 
-    public static IServiceCollection AddMinLengthFilter(this IServiceCollection services, int length)
+    public static IServiceCollection AddFilterPipeline(
+        this IServiceCollection services,
+        string key,
+        Action<FilterPipelineBuilder> configure)
     {
-        return services.AddTransient<IWordFilter, MinLengthFilter>(provider => new MinLengthFilter(length));
+        var filters = BuildFilters(configure);
+        services.AddKeyedSingleton<IFilterPipeline>(key, (provider, _) =>
+            new FilterPipeline(filters, provider.GetRequiredService<ILogger<FilterPipeline>>()));
+        return services;
     }
 
-    public static IServiceCollection AddCharacterFilter(this IServiceCollection services, char character)
+    private static Filters.IWordFilter[] BuildFilters(Action<FilterPipelineBuilder> configure)
     {
-        return services.AddTransient<IWordFilter, ContainsCharacterFilter>(provider => new ContainsCharacterFilter(character));
-    }
-
-    public static IServiceCollection AddMiddleVowelFilter(this IServiceCollection services)
-    {
-        return services.AddTransient<IWordFilter, MiddleVowelFilter>();
+        var builder = new FilterPipelineBuilder();
+        configure(builder);
+        return builder.Build();
     }
 }
