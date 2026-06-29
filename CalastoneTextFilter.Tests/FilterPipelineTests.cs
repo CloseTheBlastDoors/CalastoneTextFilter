@@ -9,20 +9,26 @@ public class FilterPipelineTests
     const int MIN_LENGTH = 3;
     const char CHARACTER_TO_FILTER = 't';
 
-    private static FilterPipeline BuildPipeline()
+    private static IFilterPipeline BuildPipeline(bool efficient)
     {
-        return new(
-    [
-        new MiddleVowelFilter(),
-        new MinLengthFilter(MIN_LENGTH),
-        new ContainsCharacterFilter(CHARACTER_TO_FILTER),
-    ], NullLogger<FilterPipeline>.Instance);
+        IWordFilter[] filters =
+        [
+            new MiddleVowelFilter(),
+            new MinLengthFilter(MIN_LENGTH),
+            new ContainsCharacterFilter(CHARACTER_TO_FILTER),
+        ];
+
+        return efficient
+            ? new EfficientFilterPipeline(filters, NullLogger<EfficientFilterPipeline>.Instance)
+            : new StandardFilterPipeline(filters, NullLogger<StandardFilterPipeline>.Instance);
     }
 
-    [Fact]
-    public void Apply_RemovesWordsThatFailAnyFilter()
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void Apply_RemovesWordsThatFailAnyFilter(bool efficient)
     {
-        var pipeline = BuildPipeline();
+        var pipeline = BuildPipeline(efficient);
         // "clean" fails Filter1 (odd-5, middle 'e' is vowel)
         // "to"    fails Filter2 (length 2)
         // "the"   fails Filter3 (contains 't')
@@ -31,45 +37,54 @@ public class FilterPipelineTests
         Assert.Equal("seven", result);
     }
 
-    [Fact]
-    public void Apply_KeepsWordsPassingAllFilters()
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void Apply_KeepsWordsPassingAllFilters(bool efficient)
     {
-        var pipeline = BuildPipeline();
+        var pipeline = BuildPipeline(efficient);
         // "seven": odd-5, middle index 2 = 'v' — not a vowel; length 5; no 't'
         // "nymph": odd-5, middle index 2 = 'm' — not a vowel; length 5; no 't'
         string result = pipeline.Apply("seven nymph");
         Assert.Equal("seven nymph", result);
     }
 
-    [Fact]
-    public void Apply_WithPunctuation()
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void Apply_WithPunctuation(bool efficient)
     {
-        var pipeline = BuildPipeline();
+        var pipeline = BuildPipeline(efficient);
         string result = pipeline.Apply("clean; to - the# seven, nymph.");
         Assert.Equal("seven, nymph.", result);
     }
 
-    [Fact]
-    public void Apply_EmptyInput_ReturnsEmpty()
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void Apply_EmptyInput_ReturnsEmpty(bool efficient)
     {
-        var pipeline = BuildPipeline();
+        var pipeline = BuildPipeline(efficient);
         Assert.Equal(string.Empty, pipeline.Apply(string.Empty));
     }
 
-    [Fact]
-    public void Apply_AllWordsFiltered_ReturnsEmpty()
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void Apply_AllWordsFiltered_ReturnsEmpty(bool efficient)
     {
-        var pipeline = BuildPipeline();
+        var pipeline = BuildPipeline(efficient);
         string result = pipeline.Apply("the to a");
         Assert.Equal(string.Empty, result);
     }
 
-    [Fact]
-    public void Apply_HandlesExtraWhitespace()
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void Apply_HandlesExtraWhitespace(bool efficient)
     {
-        var pipeline = BuildPipeline();
+        var pipeline = BuildPipeline(efficient);
         string result = pipeline.Apply("seven  nymph");
         Assert.Equal("seven nymph", result);
     }
 }
-
