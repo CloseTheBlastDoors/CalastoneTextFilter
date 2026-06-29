@@ -14,19 +14,8 @@ serviceCollection.AddFilterPipeline(pipeline => pipeline
 var serviceProvider = serviceCollection.BuildServiceProvider();
 var logger = serviceProvider.GetRequiredService<ILogger<Program>>();
 
-if (args.Length == 0)
-{
-    logger.LogError("Usage: TextFilter.App <path-to-file.txt>");
-    return 1;
-}
-
-string path = args[0];
-
-if (!File.Exists(path))
-{
-    logger.LogError("File not found: {Path}", path);
-    return 1;
-}
+string? path = GetFilePathFromArgs(args);
+if (path is null) return 1;
 
 string text = File.ReadAllText(path);
 
@@ -35,3 +24,22 @@ string result = pipeline.Apply(text);
 
 Console.WriteLine(result);
 return 0;
+
+string? GetFilePathFromArgs(string[] args)
+{
+    if (args.Length == 0)
+    {
+        logger.LogError("Usage: TextFilter.App <path-to-file.txt>");
+        return null;
+    }
+
+    string path = args[0];
+
+    if (!File.Exists(path))
+    {
+        logger.LogError("File not found: {Path}", path);
+        return null;
+    }
+
+    return path;
+}
