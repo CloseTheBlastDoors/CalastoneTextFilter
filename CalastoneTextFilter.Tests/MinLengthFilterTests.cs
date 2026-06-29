@@ -4,32 +4,47 @@ namespace CalastoneTextFilter.Tests
 {
     public class MinLengthFilterTests
     {
-        const int MIN_LENGTH = 3;
-        private readonly MinLengthFilter _filter = new(MIN_LENGTH);
-
         [Theory]
-        [InlineData("")]
-        [InlineData("a")]
-        [InlineData("to")]
-        public void ShouldKeep_ReturnsFalse_WhenLengthLessThan3(string word)
+        //Min length: 3
+        [InlineData(3, "")]
+        [InlineData(3, "a")]
+        [InlineData(3, "to")]
+
+        //Min length: 5
+        [InlineData(5, "")]
+        [InlineData(5, "a")]
+        [InlineData(5, "to")]
+        [InlineData(5, "they")]
+        [InlineData(5, "word")]
+        public void ShouldKeep_ReturnsFalse_WhenLengthLessThanLimit(int minLength, string word)
         {
-            Assert.False(_filter.ShouldKeep(word));
+            var filter = new MinLengthFilter(minLength);
+            Assert.False(filter.ShouldKeep(word));
         }
 
         [Theory]
-        [InlineData("they")]
-        [InlineData("word")]
-        [InlineData("hello")]
-        [InlineData("beginning")]
-        public void ShouldKeep_ReturnsTrue_WhenLengthMoreThan3(string word)
+        //Min length: 3
+        [InlineData(3, "they")]
+        [InlineData(3, "word")]
+        [InlineData(3, "hello")]
+        [InlineData(3, "beginning")]
+
+        //Min length: 5
+        [InlineData(5, "Farmer")]
+        [InlineData(5, "beginning")]
+        public void ShouldKeep_ReturnsTrue_WhenLengthMoreThanLimit(int minLength, string word)
         {
-            Assert.True(_filter.ShouldKeep(word));
+            var filter = new MinLengthFilter(minLength);
+            Assert.True(filter.ShouldKeep(word));
         }
 
-        [Fact]
-        public void ShouldKeep_ExactlyLength3_ReturnsTrue()
+        [Theory]
+        [InlineData(3, "abc")]
+        [InlineData(5, "Alice")]
+        public void ShouldKeep_ReturnsTrue_WhenLengthExactlyMatches(int minLength, string word)
         {
-            Assert.True(_filter.ShouldKeep("abc"));
+            var filter = new MinLengthFilter(minLength);
+            Assert.True(filter.ShouldKeep(word));
         }
     }
 }
