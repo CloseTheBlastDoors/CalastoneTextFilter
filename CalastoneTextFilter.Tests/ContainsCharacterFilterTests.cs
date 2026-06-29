@@ -4,8 +4,8 @@ namespace CalastoneTextFilter.Tests;
 
 public class ContainsCharacterFilterTests
 {
-    const char CHARACTER_TO_FILTER = 't';
-    private readonly ContainsCharacterFilter _filter = new(CHARACTER_TO_FILTER);
+    private readonly ContainsCharacterFilter _filterStandardChar = new('t');
+    private readonly ContainsCharacterFilter _filterAlternateChar = new('f');
 
     [Theory]
     [InlineData("the")]
@@ -15,7 +15,7 @@ public class ContainsCharacterFilterTests
     [InlineData("Testing")]
     public void ShouldKeep_ReturnsFalse_WhenWordContainsLowercaseOrUppercaseT(string word)
     {
-        Assert.False(_filter.ShouldKeep(word));
+        Assert.False(_filterStandardChar.ShouldKeep(word));
     }
 
     [Theory]
@@ -25,13 +25,30 @@ public class ContainsCharacterFilterTests
     [InlineData("bank")]
     public void ShouldKeep_ReturnsTrue_WhenWordDoesNotContainT(string word)
     {
-        Assert.True(_filter.ShouldKeep(word));
+        Assert.True(_filterStandardChar.ShouldKeep(word));
     }
 
     [Fact]
     public void ShouldKeep_ReturnsTrue_ForEmptyString()
     {
-        Assert.True(_filter.ShouldKeep(string.Empty));
+        Assert.True(_filterStandardChar.ShouldKeep(string.Empty));
+    }
+
+    [Theory]
+    [InlineData("feet")]
+    [InlineData("fortunately")]
+    public void ShouldKeep_ReturnsFalse_WhenWordContainsLowercaseOrUppercaseF(string word)
+    {
+        Assert.False(_filterAlternateChar.ShouldKeep(word));
+    }
+
+    [Theory]
+    [InlineData("the")]
+    [InlineData("to")]
+    [InlineData("Testing")]
+    public void ShouldKeep_ReturnsTrue_WhenWordDoesNotContainF(string word)
+    {
+        Assert.True(_filterAlternateChar.ShouldKeep(word));
     }
 }
 
