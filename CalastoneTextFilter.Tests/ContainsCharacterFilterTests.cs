@@ -1,4 +1,4 @@
-﻿using CalastoneTextFilter.App.FilterPipeline.Filters;
+using CalastoneTextFilter.Core.FilterPipeline.Filters;
 
 namespace CalastoneTextFilter.Tests;
 

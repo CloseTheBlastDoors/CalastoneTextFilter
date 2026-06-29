@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CalastoneTextFilter.App\CalastoneTextFilter.App.csproj" />
+    <ProjectReference Include="..\CalastoneTextFilter.Core\CalastoneTextFilter.Core.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,4 +1,4 @@
-﻿namespace CalastoneTextFilter.App.FilterPipeline.Filters;
+namespace CalastoneTextFilter.Core.FilterPipeline.Filters;
 
 public class MiddleVowelFilter : IWordFilter
 {
@@ -22,4 +22,3 @@ public class MiddleVowelFilter : IWordFilter
         return "aeiou".Contains(c, StringComparison.OrdinalIgnoreCase);
     }
 }
-

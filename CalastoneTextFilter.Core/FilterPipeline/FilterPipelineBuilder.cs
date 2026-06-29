@@ -1,6 +1,6 @@
-using CalastoneTextFilter.App.FilterPipeline.Filters;
+using CalastoneTextFilter.Core.FilterPipeline.Filters;
 
-namespace CalastoneTextFilter.App.FilterPipeline;
+namespace CalastoneTextFilter.Core.FilterPipeline;
 
 public class FilterPipelineBuilder
 {

@@ -1,7 +1,7 @@
-﻿using CalastoneTextFilter.App.FilterPipeline.Filters;
+using CalastoneTextFilter.Core.FilterPipeline.Filters;
 using Microsoft.Extensions.Logging;
 
-namespace CalastoneTextFilter.App.FilterPipeline;
+namespace CalastoneTextFilter.Core.FilterPipeline;
 
 public interface IFilterPipeline
 {
@@ -11,13 +11,12 @@ public interface IFilterPipeline
 public class FilterPipeline(IEnumerable<IWordFilter> filters, ILogger<FilterPipeline> logger) : IFilterPipeline
 {
     private readonly IWordFilter[] _filters = [.. filters];
-    private readonly ILogger<FilterPipeline> _logger = logger;
 
     public string Apply(string input)
     {
         if (string.IsNullOrWhiteSpace(input))
         {
-            _logger.LogWarning("Input string is null or whitespace. Returning empty string.");
+            logger.LogWarning("Input string is null or whitespace. Returning empty string.");
             return string.Empty;
         }
 
@@ -28,8 +27,6 @@ public class FilterPipeline(IEnumerable<IWordFilter> filters, ILogger<FilterPipe
 
     private static string StripNonLetterOrDigit(string word)
     {
-        string strippedWord = new([.. word.Where(char.IsLetterOrDigit)]);
-        return strippedWord;
+        return new([.. word.Where(char.IsLetterOrDigit)]);
     }
 }
-

@@ -1,7 +1,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-using CalastoneTextFilter.App.FilterPipeline;
+using CalastoneTextFilter.Core.FilterPipeline;
 
 var serviceCollection = new ServiceCollection()
     .AddLogging(builder => builder.AddConsole());

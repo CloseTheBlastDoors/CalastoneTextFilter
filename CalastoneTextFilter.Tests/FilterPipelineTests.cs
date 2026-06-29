@@ -1,5 +1,5 @@
-﻿using CalastoneTextFilter.App.FilterPipeline;
-using CalastoneTextFilter.App.FilterPipeline.Filters;
+using CalastoneTextFilter.Core.FilterPipeline;
+using CalastoneTextFilter.Core.FilterPipeline.Filters;
 using Microsoft.Extensions.Logging.Abstractions;
 
 namespace CalastoneTextFilter.Tests;

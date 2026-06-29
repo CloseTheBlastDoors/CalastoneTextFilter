@@ -1,7 +1,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-namespace CalastoneTextFilter.App.FilterPipeline;
+namespace CalastoneTextFilter.Core.FilterPipeline;
 
 public static class ServiceCollectionExtensions
 {

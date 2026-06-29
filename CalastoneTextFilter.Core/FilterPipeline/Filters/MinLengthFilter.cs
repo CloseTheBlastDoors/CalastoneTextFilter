@@ -1,4 +1,4 @@
-﻿namespace CalastoneTextFilter.App.FilterPipeline.Filters;
+namespace CalastoneTextFilter.Core.FilterPipeline.Filters;
 
 public class MinLengthFilter(int length) : IWordFilter
 {
@@ -7,4 +7,3 @@ public class MinLengthFilter(int length) : IWordFilter
         return word.Length >= length;
     }
 }
-
